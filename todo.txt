@@ -1,0 +1,72 @@
+text
+I need a complete, production-ready website built with Deno and the Fresh framework, deployed to Deno Deploy. The site has two core interfaces:
+
+## Public Homepage (Search & Display)
+- Clean, modern UI with a search bar at the top
+- Real-time search filtering across all items (name, description, category)
+- Grid layout showing items with: image, title, price (in DH), quantity available
+- Each item has a "Contact via WhatsApp" button
+- When clicked, it opens WhatsApp with a pre-formatted message containing: item name, price, quantity, and any admin notes
+- Phone number for WhatsApp is configurable via environment variable
+
+## Admin Panel (Authentication Required)
+- Protected route (/admin) with simple password authentication (hardcoded or env var)
+- Form to add new items: name, description, price (DH), quantity, image URL, category
+- List all existing items with edit/delete options
+- Items persist using Deno KV (built-in Deno database)
+- Image upload: support for both URL-based images and local uploads (stored in static/ folder)
+
+## Technical Requirements
+- Fresh framework (Deno's web framework) with Island architecture
+- Deno KV for data persistence
+- Tailwind CSS for styling (via CDN or Fresh plugin)
+- Environment variables: ADMIN_PASSWORD, WHATSAPP_PHONE_NUMBER
+- Deploy to Deno Deploy (provide deploy command)
+
+## UX Details
+- The search should be fuzzy/smart—typing "blue shirt" should match items with "shirt" in name or "blue" in description
+- Items out of stock (quantity = 0) should show "Out of Stock" overlay but still appear
+- WhatsApp message format: "Bonjour! Je suis intéressé(e) par: [ITEM NAME] - Prix: [PRICE] DH - Quantité: [QUANTITY]. [OPTIONAL NOTES]"
+- Mobile-responsive layout
+- Loading states and empty states handled gracefully
+
+## File Structure (Expected)
+project-root/
+├── main.ts
+├── routes/
+│ ├── index.tsx # Homepage with search
+│ ├── admin/
+│ │ ├── index.tsx # Admin panel
+│ │ └── items.ts # CRUD API
+├── islands/
+│ ├── SearchBar.tsx # Interactive search
+│ ├── ItemGrid.tsx # Item display logic
+│ └── AdminForm.tsx # Add/edit form
+├── components/
+│ ├── ItemCard.tsx # Single item display
+│ └── WhatsAppButton.tsx # WhatsApp link generator
+├── lib/
+│ ├── kv.ts # Deno KV helpers
+│ └── whatsapp.ts # Message formatting
+├── static/
+│ └── uploads/ # Image storage
+├── deno.json
+└── .env
+
+text
+
+## Code Quality Expectations
+- TypeScript with full type safety
+- Error handling for all async operations
+- Input validation on admin forms
+- Proper Deno Deploy configuration
+- Include a deno.json with tasks: "start", "dev", "deploy"
+- Comments explaining key logic
+
+## Security Notes
+- Password-protect admin routes (basic auth or session cookie)
+- Sanitize all user inputs
+- Validate image uploads (type, size)
+- Rate limiting not required for MVP
+
+Generate the complete codebase with all files necessary to run and deploy this site. I want to be able to `deno task start` and see the site running immediately.
