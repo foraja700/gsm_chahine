@@ -2,16 +2,20 @@ import { formatPhoneDisplay, normalizeWhatsAppPhone } from "../lib/whatsapp.ts";
 
 interface FooterProps {
   whatsappPhone?: string;
+  storeLocationQuery?: string;
 }
 
-export function Footer({ whatsappPhone }: FooterProps) {
+export function Footer({ whatsappPhone, storeLocationQuery = "GSM Chahine, Maroc" }: FooterProps) {
   const displayPhone = formatPhoneDisplay(whatsappPhone);
   const waUrl = `https://wa.me/${normalizeWhatsAppPhone(whatsappPhone)}`;
+  const encodedQuery = encodeURIComponent(storeLocationQuery);
+  const mapEmbedUrl = `https://maps.google.com/maps?q=${encodedQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  const googleMapsDirectUrl = `https://www.google.com/maps/search/?api=1&query=${encodedQuery}`;
 
   return (
     <footer class="bg-[#001D48] text-slate-300 border-t border-blue-900/50 mt-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           
           {/* Brand Info */}
           <div class="space-y-4">
@@ -19,7 +23,6 @@ export function Footer({ whatsappPhone }: FooterProps) {
               <div class="bg-white p-1 rounded-lg">
                 <img src="/logo.jpg" alt="GSM Chahine Logo" class="h-8 w-auto object-contain" />
               </div>
-             
             </div>
             <p class="text-xs text-slate-400 leading-relaxed">
               Vente, achat et réparation de tous types de smartphones, tablettes et accessoires informatiques au Maroc. Produits garantis au meilleur prix.
@@ -55,6 +58,33 @@ export function Footer({ whatsappPhone }: FooterProps) {
             </div>
           </div>
 
+          {/* Localisation / Google Map */}
+          <div class="space-y-3">
+            <h3 class="text-sm font-semibold text-white uppercase tracking-wider flex items-center justify-between">
+              <span>📍 Notre Magasin</span>
+              <a 
+                href={googleMapsDirectUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="text-[10px] text-blue-400 hover:text-blue-300 underline font-normal capitalize"
+              >
+                Ouvrir dans Maps ↗
+              </a>
+            </h3>
+            <div class="relative w-full h-44 rounded-xl overflow-hidden border border-blue-800/60 shadow-lg bg-slate-900 group">
+              <iframe
+                title="Localisation Magasin GSM Chahine"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                allowFullScreen
+                src={mapEmbedUrl}
+                class="w-full h-full opacity-90 group-hover:opacity-100 transition-opacity"
+              ></iframe>
+            </div>
+          </div>
+
         </div>
 
         <div class="mt-12 pt-6 border-t border-blue-900/50 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -68,3 +98,4 @@ export function Footer({ whatsappPhone }: FooterProps) {
     </footer>
   );
 }
+

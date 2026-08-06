@@ -5,25 +5,28 @@ import { Header } from "../components/Header.tsx";
 import { Footer } from "../components/Footer.tsx";
 import CatalogExplorer from "../islands/CatalogExplorer.tsx";
 
-import { getEnvPhoneNumber } from "../lib/whatsapp.ts";
+import { getEnvPhoneNumber, getEnvStoreLocation } from "../lib/whatsapp.ts";
 
 interface HomePageData {
   items: Item[];
   whatsappPhone: string;
+  storeLocation: string;
 }
 
 export const handler: Handlers<HomePageData> = {
   async GET(_req, ctx) {
+    const storeLocation = getEnvStoreLocation();
     try {
       const items = await getAllItems();
       const whatsappPhone = getEnvPhoneNumber();
-      return ctx.render({ items, whatsappPhone });
+      return ctx.render({ items, whatsappPhone, storeLocation });
     } catch (err) {
       console.error("Error loading home catalog:", err);
-      return ctx.render({ items: [], whatsappPhone: getEnvPhoneNumber() });
+      return ctx.render({ items: [], whatsappPhone: getEnvPhoneNumber(), storeLocation });
     }
   },
 };
+
 
 export default function Home({ data }: PageProps<HomePageData>) {
   return (
@@ -37,7 +40,8 @@ export default function Home({ data }: PageProps<HomePageData>) {
         />
       </main>
 
-      <Footer whatsappPhone={data.whatsappPhone} />
+      <Footer whatsappPhone={data.whatsappPhone} storeLocationQuery={data.storeLocation} />
     </div>
   );
 }
+

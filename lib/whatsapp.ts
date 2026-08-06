@@ -31,6 +31,23 @@ export function getEnvPhoneNumber(): string {
   return envPhone || "0690091037";
 }
 
+export function getEnvStoreLocation(): string {
+  let envLocation = Deno.env.get("STORE_LOCATION");
+  if (!envLocation) {
+    try {
+      const text = Deno.readTextFileSync("./.env");
+      const match = text.match(/STORE_LOCATION\s*=\s*(.+)/);
+      if (match && match[1]) {
+        envLocation = match[1].trim();
+      }
+    } catch {
+      // Ignore read error
+    }
+  }
+  return envLocation || "GSM Chahine, Maroc";
+}
+
+
 export function normalizeWhatsAppPhone(phone?: string): string {
   const envPhone = phone || getEnvPhoneNumber();
   let cleaned = envPhone.replace(/[^0-9]/g, "");
