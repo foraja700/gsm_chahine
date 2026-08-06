@@ -3,8 +3,14 @@ import { Item, ItemInput } from "./types.ts";
 const KV_KEY_ITEMS = "items";
 
 export async function getKv() {
+  if (typeof Deno.openKv !== "function") {
+    throw new Error(
+      "Deno KV is disabled. Please run Deno with the `--unstable-kv` flag or set your hosting start command to 'deno task start'."
+    );
+  }
   return await Deno.openKv();
 }
+
 
 export async function getAllItems(): Promise<Item[]> {
   const kv = await getKv();

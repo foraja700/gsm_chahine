@@ -1,12 +1,15 @@
 {
   "lock": false,
+  "unstable": [
+    "kv"
+  ],
   "tasks": {
     "check": "deno check **/*.ts **/*.tsx",
     "init": "deno run -A dev.ts build",
     "start": "deno run -A --unstable-kv main.ts",
     "dev": "deno run -A --unstable-kv --watch=static/,routes/ dev.ts",
     "build": "deno run -A dev.ts build",
-    "preview": "deno run -A main.ts"
+    "preview": "deno run -A --unstable-kv main.ts"
   },
   "imports": {
     "$fresh/": "https://deno.land/x/fresh@1.7.3/",
@@ -22,3 +25,4 @@
     "jsxImportSource": "preact"
   }
 }
+
